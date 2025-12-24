@@ -1,11 +1,10 @@
-import { HttpService } from '@nestjs/axios';
 import {
   BadRequestException,
   Injectable,
   ServiceUnavailableException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { firstValueFrom } from 'rxjs';
+import axios from 'axios';
 import { ConvertAmountDto } from './dto/convert-amount.dto';
 
 @Injectable()
@@ -13,19 +12,12 @@ export class ExchangeService {
   private readonly appId: string | undefined;
 
   constructor(
-    private readonly httpService: HttpService,
     private readonly configService: ConfigService,
   ) {
     this.appId = this.configService.get<string>('OPEN_EXCHANGE_APP_ID');
   }
 
   async convertAmount(dto: ConvertAmountDto) {
-    if (!this.appId) {
-      throw new ServiceUnavailableException(
-        'OPEN_EXCHANGE_APP_ID no está configurado',
-      );
-    }
-
     const from = dto.from.toUpperCase();
     const to = dto.to.toUpperCase();
     const date = dto.date;
@@ -34,11 +26,10 @@ export class ExchangeService {
       : 'https://openexchangerates.org/api/latest.json';
 
     try {
-      const response = await firstValueFrom(
-        this.httpService.get(endpoint, {
-          params: { app_id: this.appId, symbols: `${from},${to}` },
-        }),
-      );
+      const response = await axios.get(endpoint, {
+        params: { app_id: this.appId, symbols: `${from},${to}` },
+        timeout: 8000,
+      });
 
       const rates = response.data?.rates ?? {};
       if (!rates[from] || !rates[to]) {
