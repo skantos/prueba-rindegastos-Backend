@@ -16,7 +16,14 @@ import { NumbersModule } from './numbers/numbers.module';
         type: 'postgres',
         url: config.get<string>('DATABASE_URL'),
         autoLoadEntities: true,
-        synchronize: true,
+        synchronize: config.get<string>('NODE_ENV') !== 'production',
+        ssl:
+          config.get<string>('NODE_ENV') === 'production'
+            ? { rejectUnauthorized: false }
+            : false,
+        extra: {
+          max: 10,
+        },
       }),
     }),
     ThrottlerModule.forRoot([{ ttl: 60, limit: 30 }]),

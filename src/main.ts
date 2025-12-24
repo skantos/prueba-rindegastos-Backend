@@ -1,12 +1,15 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import helmet from 'helmet';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.use(helmet());
   const allowedOrigins = [
     'https://prueba-rindegastos-frontend.onrender.com',
     'http://localhost:5173',
+    'http://127.0.0.1:5173',
   ];
   app.enableCors({
     origin: (origin, callback) => {
