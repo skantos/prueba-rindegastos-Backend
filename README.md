@@ -18,8 +18,8 @@ npm install
 ### Variables de entorno
 Crea un `.env` en la raíz:
 ```
-DATABASE_URL=postgresql://USER:PASSWORD@HOST:5432/DBNAME?sslmode=require
-OPEN_EXCHANGE_APP_ID=tu_api_key_de_openexchangerates
+DATABASE_URL=postgresql://rg_users:3L7xHR8FJBlVy0TQr6SfvZWn94pjwQ7F@dpg-d545m4f5r7bs73e7nuk0-a.oregon-postgres.render.com:5432/rindegastos_iy5u?sslmode=require
+OPEN_EXCHANGE_APP_ID=db9b4b25ebce4bccb753006fc16b7515
 ```
 En Render usa la URL externa de la base (con `sslmode=require`) y define ambas variables en el panel de env vars.
 
@@ -59,3 +59,7 @@ npm run build
    - Start: `npm run start:prod`
    - Env vars: `DATABASE_URL`, `OPEN_EXCHANGE_APP_ID`, `NODE_ENV=production` (opcional).
 3. Probar con los endpoints anteriores usando la URL pública del servicio.
+
+### URLs desplegadas
+- Backend: https://prueba-rindegastos-backend.onrender.com
+- Frontend: https://prueba-rindegastos-frontend.onrender.com
